@@ -1,16 +1,31 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import {
+  aws_lambda,
+  aws_lambda_event_sources,
+  aws_sqs,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as path from "path";
 
-export class IntroCdkStack extends Stack {
+export class HelloCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // sqs
+    const queue = new aws_sqs.Queue(this, "HelloQueue", {
+      queueName: "HelloQueue",
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'IntroCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // lambda
+    const fn = new aws_lambda.Function(this, "HelloFunction", {
+      functionName: "HelloLambda",
+      runtime: aws_lambda.Runtime.PYTHON_3_8,
+      code: aws_lambda.Code.fromAsset(path.join(__dirname, "./../lambda")),
+      handler: "handler.handler",
+    });
+
+    // lambda event source - sqs queue
+    fn.addEventSource(new aws_lambda_event_sources.SqsEventSource(queue));
   }
 }
