@@ -112,6 +112,47 @@ export class HelloCdkStack extends Stack {
 ```
 here **[aws_sqs](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html)** is a L2 construct. 
 
-### Create your own construct 
+## Create your own construct 
 ```tsx
+export interface QueueRecorderProps {
+  inputQueue: aws_sqs.Queue;
+}
+
+export class QueueRecorder extends Construct {
+  constructor(scope: Construct, id: string, props: QueueRecorderProps) {
+    super(scope, id);
+
+    // lambda
+    const fn = new aws_lambda.Function(this, "HelloFunction", {
+      functionName: "HelloLambda",
+      runtime: aws_lambda.Runtime.PYTHON_3_8,
+      code: aws_lambda.Code.fromAsset(path.join(__dirname, "./../lambda")),
+      handler: "handler.handler",
+    });
+
+    // lambda event source - sqs queue
+    fn.addEventSource(
+      new aws_lambda_event_sources.SqsEventSource(props.inputQueue)
+    );
+  }
+}
+```
+
+## Refactor the code 
+```tsx
+export class HelloCdkStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    // sqs
+    const queue = new aws_sqs.Queue(this, "HelloQueue", {
+      queueName: "HelloQueue",
+    });
+
+    // queuerecorder construct
+    new QueueRecorder(this, "QueueRecorder", {
+      inputQueue: queue,
+    });
+  }
+}
 ```
