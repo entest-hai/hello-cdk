@@ -15,7 +15,7 @@ def handler(event, context):
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(os.environ['TABLE_NAME'])
     # put item to the table 
-    for record in event.Records:
+    for record in event['Records']:
         try: 
             body = record['body']
         except:
