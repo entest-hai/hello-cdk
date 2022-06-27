@@ -115,6 +115,10 @@ export class HelloCdkStack extends Stack {
 here **[aws_sqs](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html)** is a L2 construct. 
 
 ## Create your own construct 
+
+![aws_devops-cdk-course drawio (1)](https://user-images.githubusercontent.com/20411077/175960880-64588f85-67d5-4d87-94e0-a3d4bcdee40b.png)
+
+
 ```tsx
 export interface QueueRecorderProps {
   inputQueue: aws_sqs.Queue;
