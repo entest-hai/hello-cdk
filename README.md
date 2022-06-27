@@ -1,10 +1,10 @@
-# Introduction to Cloud Development Kit (CDK)
+# Introduction to Cloud Development Kit
 
 - [elad: re:invent 2018](https://www.youtube.com/watch?v=Lh-kVC2r2AU)
 - [elad: re:invent 2019](https://www.youtube.com/watch?v=9As_ZIjUGmY&list=LL&index=221)
 
 [Elad-Ben Israel](https://thecdkbook.com/foreword.html) - the creator of CDK joined Amazon in 2016. Then CDK first released in JUL 2019. Quoted from him 
-```
+```txt
 In early 2016, I joined a group of Amazon engineers who were exploring hardware utilization in one of the most important and large-scale services behind Amazon.com—Amazon Product Search. One piece of this solution required processing, in real time, all activity from Amazon.com to determine which products were being purchased...
 ```
 
