@@ -31,42 +31,42 @@ cdk init --language typescript
 |--cdk.json
 ```
 ### Synthesize Templates
-- synthesize cloudformation templates. Then templates stored in cdk.out
+synthesize cloudformation templates. Then templates stored in cdk.out
 ```bash 
 cdk synth 
 ```
-- the default cdk synth synthesize a ts file specified by cdk.json   
+the default cdk synth synthesize a ts file specified by cdk.json   
 ```bash 
  "app": "npx ts-node --prefer-ts-exts bin/hello-cdk.ts"
 ```
-- we can override it by (this means we can write multiple apps)
+we can override it by (this means we can write multiple apps)
 ```bash 
 cdk --app 'npx ts-node --prefer-ts-exts bin/my-app.ts' synth
 ```
 ### Deploy Stacks
-- if there is one stack 
+if there is one stack 
 ```bash
-- cdk deploy
+cdk deploy
 ```
-- deploy a specific stack in multiple stacks 
+deploy a specific stack in multiple stacks 
 ```bash 
 cdk deploy "HelloCdkStack"
 ```
-- if deploy all stacks in the app 
+if deploy all stacks in the app 
 ```bash 
 cdk deploy --all 
 ```
 
 ### Destroy Stacks 
-- if there is only one stack 
+if there is only one stack 
 ```bash 
 cdk destroy 
 ```
-- destroy a specific stack in multiple stacks 
+destroy a specific stack in multiple stacks 
 ```bash 
 cdk destroy "HelloCdkStack"
 ```
-- destroy all stacks in the app 
+destroy all stacks in the app 
 ```bash 
 cdk destroy --all 
 ```
@@ -105,7 +105,7 @@ export class HelloCdkStack extends Stack {
       handler: "handler.handler",
     });
 
-    // lambda event source - sqs queue
+    // lambda event source sqs queue
     fn.addEventSource(new aws_lambda_event_sources.SqsEventSource(queue));
   }
 }
