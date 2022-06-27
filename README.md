@@ -1,7 +1,7 @@
 # Introduction to Cloud Development Kit
 
-- [elad: re:invent 2018](https://www.youtube.com/watch?v=Lh-kVC2r2AU)
-- [elad: re:invent 2019](https://www.youtube.com/watch?v=9As_ZIjUGmY&list=LL&index=221)
+- [elad-ben: re:invent 2018](https://www.youtube.com/watch?v=Lh-kVC2r2AU)
+- [elad-ben: re:invent 2019](https://www.youtube.com/watch?v=9As_ZIjUGmY&list=LL&index=221)
 
 [Elad-Ben Israel](https://thecdkbook.com/foreword.html) - the creator of CDK joined Amazon in 2016. Then CDK first released in JUL 2019. Quoted from him
  
@@ -134,6 +134,22 @@ export class QueueRecorder extends Construct {
     fn.addEventSource(
       new aws_lambda_event_sources.SqsEventSource(props.inputQueue)
     );
+
+    // dynamodb table
+    const table = new aws_dynamodb.Table(this, "HelloDynamoDb", {
+      tableName: "HelloTable",
+      removalPolicy: RemovalPolicy.DESTROY,
+      partitionKey: {
+        name: "id",
+        type: aws_dynamodb.AttributeType.STRING,
+      },
+    });
+
+    // table name into lambda env
+    fn.addEnvironment("TABLE_NAME", table.tableName);
+
+    // grant lambda to write to table
+    table.grantWriteData(fn.role!);
   }
 }
 ```
