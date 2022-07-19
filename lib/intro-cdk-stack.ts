@@ -7,6 +7,8 @@ import {
   RemovalPolicy,
   Stack,
   StackProps,
+  Stage,
+  StageProps,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as path from "path";
@@ -66,6 +68,14 @@ export class QueueRecorder extends Construct {
   }
 }
 
+class MyApplication extends Stage {
+  constructor(scope: Construct, id: string, props?: StageProps) {
+    super(scope, id, props);
+
+    new HelloCdkStack(this, "HelloCdk");
+  }
+}
+
 export class MyPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -82,5 +92,14 @@ export class MyPipelineStack extends Stack {
         commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
     });
+
+    pipeline.addStage(
+      new MyApplication(this, "PreProdApp", {
+        env: {
+          account: this.account,
+          region: this.region,
+        },
+      })
+    );
   }
 }
