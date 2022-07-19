@@ -79,7 +79,7 @@ export class MyPipelineStack extends Stack {
             connectionArn: `arn:aws:codestar-connections:${this.region}:${this.account}:connection/f8487d2f-fbf7-4604-8d4c-e672b7d38cf4`,
           }
         ),
-        commands: ["npm install", "npm run build", "npm run cdk synth"],
+        commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
     });
   }

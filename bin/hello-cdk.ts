@@ -14,7 +14,7 @@ new HelloCdkStack(app, "HelloCdkStack", {
 });
 
 // pipeline stack
-new MyPipelineStack(app, "MyPipelineStaack", {
+new MyPipelineStack(app, "MyPipelineStack", {
   env: {
     region: process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
