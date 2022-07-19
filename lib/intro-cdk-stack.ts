@@ -3,6 +3,7 @@ import {
   aws_lambda,
   aws_lambda_event_sources,
   aws_sqs,
+  pipelines,
   RemovalPolicy,
   Stack,
   StackProps,
@@ -62,5 +63,24 @@ export class QueueRecorder extends Construct {
 
     // grant lambda to write to table
     table.grantWriteData(fn.role!);
+  }
+}
+
+class MyPipelineStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    const pipeline = new pipelines.CodePipeline(this, "Pipeline", {
+      synth: new pipelines.ShellStep("Synth", {
+        input: pipelines.CodePipelineSource.connection(
+          "entest-hai/hello-cdk",
+          "master",
+          {
+            connectionArn: `arn:aws:codestar-connections:${this.region}:${this.account}:connection/f8487d2f-fbf7-4604-8d4c-e672b7d38cf4`,
+          }
+        ),
+        commands: ["npm install", "npm run build", "npm run cdk synth"],
+      }),
+    });
   }
 }
