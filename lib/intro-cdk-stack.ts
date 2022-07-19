@@ -93,8 +93,22 @@ export class MyPipelineStack extends Stack {
       }),
     });
 
-    pipeline.addStage(
+    // wave parallel deploy
+    const wave = pipeline.addWave("WaveParallel");
+
+    // pre-prod app
+    wave.addStage(
       new MyApplication(this, "PreProdApp", {
+        env: {
+          account: this.account,
+          region: this.region,
+        },
+      })
+    );
+
+    // prod app
+    wave.addStage(
+      new MyApplication(this, "ProdApp", {
         env: {
           account: this.account,
           region: this.region,
