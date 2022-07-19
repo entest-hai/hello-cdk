@@ -66,7 +66,7 @@ export class QueueRecorder extends Construct {
   }
 }
 
-class MyPipelineStack extends Stack {
+export class MyPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
