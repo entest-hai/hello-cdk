@@ -68,11 +68,26 @@ export class QueueRecorder extends Construct {
   }
 }
 
-class MyApplication extends Stage {
+class HelloApplicationStage extends Stage {
   constructor(scope: Construct, id: string, props?: StageProps) {
     super(scope, id, props);
 
     new HelloCdkStack(this, "HelloCdk");
+
+    // multi-stacks dependency
+  }
+}
+
+class LambdaApplicationStage extends Stage {
+  constructor(scope: Construct, id: string, props: StageProps) {
+    super(scope, id, props);
+
+    new aws_lambda.Function(this, "ProcessingTwitteLambda", {
+      functionName: "ProcessingTwitteLambda",
+      runtime: aws_lambda.Runtime.PYTHON_3_7,
+      code: aws_lambda.Code.fromAsset(path.join(__dirname, "./../lambda")),
+      handler: "handler.handler",
+    });
   }
 }
 
@@ -98,7 +113,7 @@ export class MyPipelineStack extends Stack {
 
     // pre-prod app
     wave.addStage(
-      new MyApplication(this, "PreProdApp", {
+      new HelloApplicationStage(this, "HelloApp", {
         env: {
           account: this.account,
           region: this.region,
@@ -108,7 +123,7 @@ export class MyPipelineStack extends Stack {
 
     // prod app
     wave.addStage(
-      new MyApplication(this, "ProdApp", {
+      new LambdaApplicationStage(this, "LambdaApp", {
         env: {
           account: this.account,
           region: this.region,
